@@ -1,14 +1,9 @@
 import re
 
-#one = open('huckleberryfin.txt', 'r')
-one = open('janeEyre.txt', 'r')
-book = one.read().replace('\n',' ')
-one.close()
-
 #dictionary
-two = open('allNamesUppercase.txt', 'r')
-namelist = two.read().reaplce('\n', ' ')
-two.close()
+one = open('allNamesUppercase.txt', 'r')
+namelist = one.read().split()
+one.close()
 
 
 ### TO DO ###
@@ -17,7 +12,7 @@ two.close()
 #                 Mister, Miss, Missus, Doctor, Captain, Lady, Lord, etc...
 
 
-def findNames():
+def findNames(website):
     #create a list with pairs of UC words
     #names = re.findall("[A-Z][a-z]+ [A-Z][a-z]+", book)
 
@@ -25,12 +20,22 @@ def findNames():
     names = {}
     
     #match titles/full names/first name
-    for match in re.finditer("[Mr.|Mrs.|Ms.|Dr.|Jr.]* [A-Z][a-z]+ [A-Z]*[a-z]* [Jr.|Snr.]*", book):
+    for match in re.finditer("[Mr.|Mrs.|Ms.|Dr.|Jr.]* [A-Z][a-z]+ [A-Z]*[a-z]* [Jr.|Snr.]*", website):
         #need to split match.group by ' ' then check if actually name when no title before
-        addToDict(match.group(),names)
+        parts = match.group().split()
+        for part in parts:
+            n = False
+            if not(part.index('.') != -1):
+                return
+            if part in namelist:
+                n = True
+            else:
+                n = False
+        if n == True:
+            addToDict(match.group(),names)
 
     #match beginning of sentences
-    for match in re.finditer("..[A-Z][a-z]+", book):
+    for match in re.finditer("..[A-Z][a-z]+", website):
         if not(match.group()[0] in ".\":;\'-"):
             addToDict(match.group()[2:],names)
 
@@ -46,4 +51,4 @@ def addToDict(string,dict):
 
 
 if __name__=="__main__":
-    findNames()
+    #findNames()
