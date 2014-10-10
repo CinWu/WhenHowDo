@@ -43,6 +43,13 @@ def findNames(website):
     print names #debugging
     print "len: %d" % len(names)
 
+#def findDates(website):
+#    dates = {}
+#    for match in re.finditer(" "):
+#         parts = match.group().split()
+#         addToDict(match.group(),dates)
+   
+
 def addToDict(string,dict):
     if string in dict:
         dict[string]+= 1
