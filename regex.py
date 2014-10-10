@@ -43,11 +43,11 @@ def findNames(website):
     print names #debugging
     print "len: %d" % len(names)
 
-#def findDates(website):
-#    dates = {}
-#    for match in re.finditer(" "):
-#         parts = match.group().split()
-#         addToDict(match.group(),dates)
+def findDates(website):
+    dates = {"^January$|^February$|^March$|^April$|^May$|^June$|^July$|^August$|^September$|^October$|^November$|^December$|^Jan.$|^Feb.$|^Mar.$|^Jun.$|^Jul.$|^Aug.$|^Sept.$|^Oct.$|^Nov.$|^Dec.$\s+[\d]{1,}+,\s+[\d]{1,}"}
+    for match in re.finditer(" "):
+         parts = match.group().split()
+         addToDict(match.group(),dates)
    
 
 def addToDict(string,dict):
