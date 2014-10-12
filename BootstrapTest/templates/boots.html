@@ -1,0 +1,45 @@
+{% extends "bootstrap/base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block title %}This is an example page{% endblock %}
+
+{% block navbar %}
+<div class="navbar navbar-fixed-top">
+  menu stuff
+  <!-- ... -->
+</div>
+{% endblock %}
+
+{% block content %}
+<div class = "container">
+  <h1>Hello, Bootstrap</h1>
+
+  <p class="text-left">Left aligned text.</p>
+  <p class="text-center">Center aligned text.</p>
+  <p class="text-right">Right aligned text.</p>
+  <p class="text-justify">Justified text.</p>
+  <p class="text-nowrap">No wrap text.</p>
+
+  <blockquote>
+    <p>Blockquote</p>
+  </blockquote>
+
+  <table class="table table-striped">
+    <tr>
+      <td>One</td>
+    </tr>
+    <tr>
+      <td>Two</td>
+    </tr>
+  </table>
+
+
+<h2>input
+<div class = "input-group">
+  <input type="text" class="form-control" placeholder="Text input">
+  <span class = "input-group-btn">
+    <button class = "btn btn-default" type = "button">enter</button>
+  </span>
+<h2>
+</div>
+{% endblock %}
