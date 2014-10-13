@@ -11,7 +11,6 @@ one.close()
 # Titles such as: Mr., Ms., Mrs., Dr., Judge, Uncle, Aunt, King, Queen, Captain,
 #                 Mister, Miss, Missus, Doctor, Captain, Lady, Lord, etc...
 
-
 def findNames(website):
     #create a list with pairs of UC words
     #names = re.findall("[A-Z][a-z]+ [A-Z][a-z]+", book)
@@ -25,8 +24,8 @@ def findNames(website):
         parts = match.group().split()
         for part in parts:
             n = False
-            if not(part.index('.') != -1):
-                return
+#            if not(part.index('.') != -1):
+#                return
             if part in namelist:
                 n = True
             else:
@@ -38,10 +37,29 @@ def findNames(website):
     for match in re.finditer("..[A-Z][a-z]+", website):
         if not(match.group()[0] in ".\":;\'-"):
             addToDict(match.group()[2:],names)
+    
+    #Frequency and narrowing down search
+    frqnames = {}
+    for k,v in names.items():
+        if (v not in frqnames):
+            frqnames[v] = [k]
+        else:
+            frqnames[v].append(k)
+    size = len(frqnames)/2
+    i = 0
+    while( len(frqnames) > 10 or len(frqnames) > size):
+        if i in frqnames:
+            del frqnames[i]
+        i += 1
+    names = {}
+    for k,v in frqnames.items():
+        for n in v:
+            if (n not in names):
+                names[n] = k
 
     #debugging
-    print names #debugging
-    print "len: %d" % len(names)
+    return names #debugging
+#    print "len: %d" % len(names)
 
 def findDates(website):
     dates = {"^January$|^February$|^March$|^April$|^May$|^June$|^July$|^August$|^September$|^October$|^November$|^December$|^Jan.$|^Feb.$|^Mar.$|^Jun.$|^Jul.$|^Aug.$|^Sept.$|^Oct.$|^Nov.$|^Dec.$\s+[\d]{1,}+,\s+[\d]{1,}"}
@@ -57,5 +75,5 @@ def addToDict(string,dict):
         dict[string] = 1;
 
 
-if __name__=="__main__":
+#if __name__=="__main__":
     #findNames()
