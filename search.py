@@ -22,6 +22,7 @@ def find(q):
 
             if "who" in q.lower():
                 names = regex.findNames(txt)
+                print names
                 addVals(names)
             elif "when" in q.lower():
                 addVals(regex.findDates(txt))
@@ -54,6 +55,7 @@ def narrow(dict):
         if ( v in freq ):
             del dict[k]
     return dict.keys()
-        
-find("Who is batman")
-find("who is sheik")
+ 
+find("when is columbus day")       
+#find("Who is batman")
+#find("who is sheik")
