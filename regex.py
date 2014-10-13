@@ -24,34 +24,18 @@ def findNames(website):
     names = {}
     
     #match titles/full names
-    for match in re.finditer("(?<!\. )[Mr.|Mrs.|Ms.|Dr.|Jr.]* [A-Z][a-z]+ [A-Z][a-z]+ [Jr.|Snr.]*", website):
+    for match in re.finditer("(?<!\. )[Mr.|Mrs.|Ms.|Dr.|Jr.]?( )?[A-Z][a-z]+(\s[A-Z][a-z]+)+ [Jr.|Snr.]*", website):
         #isName is a function that tells if valid name or not
         if isName(match.group()):
-            addToDict(match.group(),names)
- 
+            #remExtras removes whitespace/other random chars
+            addToDict(remExtras(match.group()),names)
+    
     #match beginning of sentences
     for match in re.finditer("..[A-Z][a-z]+", website):
         if not(match.group()[0] in ".:;") and (match.group().upper() in namelist):
-            addToDict(match.group()[2:],names)
-    
-    #Frequency and narrowing down search
-    frqnames = {}
-    for k,v in names.items():
-        if (v not in frqnames):
-            frqnames[v] = [k]
-        else:
-            frqnames[v].append(k)
-    size = len(frqnames)/2
-    i = 0
-    while( len(frqnames) > 10 or len(frqnames) > size):
-        if i in frqnames:
-            del frqnames[i]
-        i += 1
-    names = {}
-    for k,v in frqnames.items():
-        for n in v:
-            if (n not in names):
-                names[n] = k
+            addToDict(remExtras(match.group()),names)
+
+    names = narrow(names)
 
     #debugging
     return names #debugging
@@ -72,9 +56,10 @@ def isName(name):
 
 def findDates(website):
     dates = {}
-    for match in re.finditer("January|February|March$|^April$|^May$|^June$|^July$|^August$|^September$|^October$|^November$|^December$|^Jan.$|^Feb.$|^Mar.$|^Jun.$|^Jul.$|^Aug.$|^Sept.$|^Oct.$|^Nov.$|^Dec.$\s+[\d]{1,}"):
+    for match in re.finditer("January|February|March$|^April$|^May$|^June$|^July$|^August$|^September$|^October$|^November$|^December$|^Jan.$|^Feb.$|^Mar.$|^Jun.$|^Jul.$|^Aug.$|^Sept.$|^Oct.$|^Nov.$|^Dec.$\s+[\d]{1,}",website):
          parts = match.group().split()
          addToDict(match.group(),dates)
+    print dates
     return dates     
    
 
@@ -84,6 +69,29 @@ def addToDict(string,dict):
     else:
         dict[string] = 1;
 
+#housekeeping, cleans the name of ., spaces, etc
+def remExtras(string):
+    name = re.search("([(Mr.)|(Mrs.)|(Ms.)|(Dr.)|(Jr.)])?[A-Z][a-z]+(\s[A-Z][a-z]+)+( [Jr.|Snr.])*", string)
+    if ( name == None ):
+        return string
+    return name.group()
+
+def narrow(dict):
+    freq = []
+    for v in dict.values():
+        if (v not in freq):
+            freq.append(v)
+    freq = sorted(freq)
+    
+    length = len(freq)  
+    #will take top 10
+    while (len(freq) > length-10 and len(freq) > 0):
+        freq.pop()
+
+    for k,v in dict.items():
+        if ( v in freq ):
+            del dict[k]
+    return dict
 
 #if __name__=="__main__":
 #    findNames(book)
