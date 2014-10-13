@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 from bs4 import BeautifulSoup
 
 app = Flask(__name__)
@@ -9,7 +9,11 @@ def home():
 
 @app.route("/answer")
 def answer():
-    
+   question= request.args.get("question_input")
+   print question
+   #need to figure out which file to send it to
+   # answer= file(question)
+   return render_template("output.html", question = question, answer= answer) 
 
 
 
