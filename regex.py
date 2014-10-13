@@ -1,5 +1,10 @@
 import re
 
+#test on book
+#test = open('janeEyre.txt', 'r')
+#book = test.read().replace('\n',' ')
+#test.close()
+
 #dictionary
 one = open('allNamesUppercase.txt', 'r')
 namelist = one.read().split()
@@ -18,24 +23,15 @@ def findNames(website):
     #create a dict with key=name; value=occurrences 
     names = {}
     
-    #match titles/full names/first name
-    for match in re.finditer("[Mr.|Mrs.|Ms.|Dr.|Jr.]* [A-Z][a-z]+ [A-Z]*[a-z]* [Jr.|Snr.]*", website):
-        #need to split match.group by ' ' then check if actually name when no title before
-        parts = match.group().split()
-        for part in parts:
-            n = False
-#            if not(part.index('.') != -1):
-#                return
-            if part in namelist:
-                n = True
-            else:
-                n = False
-        if n == True:
+    #match titles/full names
+    for match in re.finditer("(?<!\. )[Mr.|Mrs.|Ms.|Dr.|Jr.]* [A-Z][a-z]+ [A-Z][a-z]+ [Jr.|Snr.]*", website):
+        #isName is a function that tells if valid name or not
+        if isName(match.group()):
             addToDict(match.group(),names)
-
+ 
     #match beginning of sentences
     for match in re.finditer("..[A-Z][a-z]+", website):
-        if not(match.group()[0] in ".\":;\'-"):
+        if not(match.group()[0] in ".:;") and (match.group().upper() in namelist):
             addToDict(match.group()[2:],names)
     
     #Frequency and narrowing down search
@@ -61,6 +57,19 @@ def findNames(website):
     return names #debugging
 #    print "len: %d" % len(names)
 
+def isName(name):
+    #split name by whitespace
+    parts = name.split()
+    #loop through and see if each part is a valid part of a name minus titles (can tell by if '.' in index
+    n = True
+    for part in parts:
+        if (part.upper() in namelist) or ('.' in part):
+            n = True
+        else:
+            n = False
+    return n
+
+
 def findDates(website):
     dates = {"^January$|^February$|^March$|^April$|^May$|^June$|^July$|^August$|^September$|^October$|^November$|^December$|^Jan.$|^Feb.$|^Mar.$|^Jun.$|^Jul.$|^Aug.$|^Sept.$|^Oct.$|^Nov.$|^Dec.$\s+[\d]{1,}+,\s+[\d]{1,}"}
     for match in re.finditer(" "):
@@ -76,4 +85,5 @@ def addToDict(string,dict):
 
 
 #if __name__=="__main__":
-    #findNames()
+#    findNames(book)
+
