@@ -1,10 +1,15 @@
+#Takes FOREVER to search.
+
 import google
 from bs4 import BeautifulSoup
 from urllib import urlopen
 
 import regex
 
-def find(q): 
+
+results = {}
+
+def find(q):
     for url in google.search(q, num = 5, stop = 10):
         
         u = urlopen(url)
@@ -12,11 +17,43 @@ def find(q):
         
         #reads text in body tags
         txt = txt.body
+        if (txt != None):
+            txt = txt.prettify().encode('UTF-8')
 
-        txt = txt.prettify().encode('UTF-8')
-        
-        regex.findNames(txt)
+            if "who" in q.lower():
+                names = regex.findNames(txt)
+                addVals(names)
+            elif "when" in q.lower():
+                addVals(regex.findDates(txt))
+    print narrow(results)
+    results.clear()
+    #print url
+
+#To put together the top searches
+def addVals(dict):
+    for k,v in dict.items():
+        if (k not in results):
+            results[k] = v
+        else:
+            results[k] += v
+
+#narrows down the top searches formed by addVals
+def narrow(dict):
+    freq = []
+    for v in dict.values():
+        if (v not in freq):
+            freq.append(v)
+    freq = sorted(freq)
     
-        #print url
+    length = len(freq)  
+    #will take top 10
+    while (len(freq) > length-10):
+        freq.pop()
 
+    for k,v in dict.items():
+        if ( v in freq ):
+            del dict[k]
+    return dict.keys()
+        
 find("Who is batman")
+find("who is sheik")
