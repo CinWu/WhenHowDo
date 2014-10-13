@@ -66,6 +66,7 @@ def findDates(website):
     for match in re.finditer("January|February|March$|^April$|^May$|^June$|^July$|^August$|^September$|^October$|^November$|^December$|^Jan.$|^Feb.$|^Mar.$|^Jun.$|^Jul.$|^Aug.$|^Sept.$|^Oct.$|^Nov.$|^Dec.$\s+[\d]{1,}"):
          parts = match.group().split()
          addToDict(match.group(),dates)
+    return dates     
    
 
 def addToDict(string,dict):
