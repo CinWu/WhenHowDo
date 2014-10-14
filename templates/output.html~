@@ -15,8 +15,8 @@
 
 
 
-	<h3>Q: {{question}}</h3><br>
-	<h4>A: {{answer}}</h4>
+	<h3>Q:{{question}}</h3><br>
+	<h4>A:{{answer}}</h4>
 
 </body>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
