@@ -22,15 +22,19 @@ def find(q):
 
             if "who" in q.lower():
                 names = regex.findNames(txt)
-                print names
                 addVals(names)
             elif "when" in q.lower():
-                addVals(regex.findDates(txt))
+                dates = regex.findDates(txt)
+                print dates
+                addVals(dates)
 
     strresults = ""
     for i in narrow(results):
+        print i
         #Why breaks no work
-        strresults += i + ", "
+        strresults += i + " OR "
+    if (len(strresults) > 4):
+        strresults = strresults[0:len(strresults)-4]
     return strresults
     results.clear()
     #print url
