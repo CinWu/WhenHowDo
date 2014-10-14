@@ -10,7 +10,7 @@ app = Flask(__name__)
 def home(error = None):
     if (request.method == "POST"):
         return redirect(url_for('answer'))
-        return render_template("input.html")
+    return render_template("input.html")
         
 @app.route("/answer", methods = ["GET","POST"])
 def answer(question = None, answer = None, error = None):
