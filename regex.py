@@ -56,7 +56,7 @@ def isName(name):
 
 def findDates(website):
     dates = {}
-    for match in re.finditer("January|February|March|April|May|June|July|August|September|October|November|December|Jan|Feb|Mar|Jun|Jul|Aug|Sept|Oct|Nov|Dec\s[\d]{1,}|[\d]{4,4}",website):
+    for match in re.finditer("[January|February|March|April|May|June|July|August|September|October|November|December|Jan|Feb|Mar|Jun|Jul|Aug|Sept|Oct|Nov|Dec]+\s[\d]{1,}, [\d]{4,4}",website):
          parts = match.group().split()
          addToDict(match.group(),dates)
     print dates
@@ -71,7 +71,7 @@ def addToDict(string,dict):
 
 #housekeeping, cleans the name of ., spaces, etc
 def remExtras(string):
-    name = re.search("([(Mr.)|(Mrs.)|(Ms.)|(Dr.)|(Jr.)])?[A-Z][a-z]+(\s[A-Z][a-z]+)+( [Jr.|Snr.])*", string)
+    name = re.search("([(Mr.)|(Mrs.)|(Ms.)|(Dr.)|(Jr.)])?[A-Z][a-z]+(\s[A-Z][a-z]+)( [Jr.|Snr.])*", string)
     if ( name == None ):
         return string
     return name.group()
