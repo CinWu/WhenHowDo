@@ -12,7 +12,7 @@ def answer():
    question= request.args.get("question_input")
    print question
    #need to figure out which file to send it to
-   # answer= file(question)
+   answer= search.find(question)
    return render_template("output.html", question = question, answer= answer) 
 
 
