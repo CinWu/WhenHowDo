@@ -26,7 +26,12 @@ def find(q):
                 addVals(names)
             elif "when" in q.lower():
                 addVals(regex.findDates(txt))
-    print narrow(results)
+
+    strresults = ""
+    for i in narrow(results):
+        #Why breaks no work
+        strresults += i + ", "
+    return strresults
     results.clear()
     #print url
 
@@ -48,7 +53,7 @@ def narrow(dict):
     
     length = len(freq)  
     #will take top 10
-    while (len(freq) > length-10):
+    while (len(freq) > length-10 and len(freq) > 0):
         freq.pop()
 
     for k,v in dict.items():
@@ -56,6 +61,6 @@ def narrow(dict):
             del dict[k]
     return dict.keys()
  
-find("when is columbus day")       
+#find("when is columbus day")       
 #find("Who is batman")
 #find("who is sheik")
